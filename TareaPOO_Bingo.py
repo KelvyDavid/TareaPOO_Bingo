@@ -54,16 +54,12 @@ class cartonBingo:
     def generarCarton(self):
         listaNumeros= random.sample(range(self.limiteInferior,self.limiteSuperior),self.cantidadNumeros)
         listaNumeros.sort()
-        print(listaNumeros)
-        for a in range(self.cantFilas):
-            fila= listaNumeros[a*self.dimFila:(a+1)*self.dimFila]
+        for i in range(self.cantFilas):
+            fila= listaNumeros[i*self.dimFila:(i+1)*self.dimFila]
             self.numeros.append(fila)
 
-    def mostrarCarton():
-        pass
-
-    def actualizarCarton():
-        pass
+    def mostrarDatos(self):
+        return self.numeros
 
 class bingo:
     def __init__(self, jugadores):
@@ -71,7 +67,18 @@ class bingo:
         for i in range(jugadores):
             carton=cartonBingo()
             carton.generarCarton()
-            self.jugadores.append([f'Jugador {i+1}',carton])
+            numCarton= carton.mostrarDatos()
+            self.jugadores.append([f'JUGADOR {i+1}',numCarton])
+
+    def mostrarCarton(self):
+        for jugador in self.jugadores:
+            print(f'CARTON DE BINGO DEL {jugador[0]}:')
+            for lista in jugador[1]:
+                print('\t'.join(map(str,lista)))
+            print('\n')
+            
+    def actualizarCarton():
+        pass
 
     def sortearNumero():
         pass
@@ -108,3 +115,4 @@ if __name__== '__main__':
         if validaCantidad(cantJugadores):
             break
     salaBingo= bingo(int(cantJugadores))
+    salaBingo.mostrarCarton()
