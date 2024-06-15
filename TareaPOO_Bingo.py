@@ -40,12 +40,24 @@ número sorteado.
 • Anunciar el ganador del juego una vez se cumpla la condición de Bingo.
 '''
 
+import random
+
 class cartonBingo:
     def __init__(self):
         self.numeros = []
+        self.limiteInferior = 1
+        self.limiteSuperior = 101
+        self.cantidadNumeros = 20
+        self.cantFilas = 5
+        self.dimFila = int(self.cantidadNumeros/self.cantFilas)
         
-    def generarCarton():
-        pass
+    def generarCarton(self):
+        listaNumeros= random.sample(range(self.limiteInferior,self.limiteSuperior),self.cantidadNumeros)
+        listaNumeros.sort()
+        print(listaNumeros)
+        for a in range(self.cantFilas):
+            fila= listaNumeros[a*self.dimFila:(a+1)*self.dimFila]
+            self.numeros.append(fila)
 
     def mostrarCarton():
         pass
@@ -95,4 +107,4 @@ if __name__== '__main__':
         cantJugadores = input('Ingrese la cantidad de jugadores: ')
         if validaCantidad(cantJugadores):
             break
-    salaBingo= bingo(cantJugadores)
+    salaBingo= bingo(int(cantJugadores))
