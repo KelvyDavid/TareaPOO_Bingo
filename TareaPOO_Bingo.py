@@ -41,8 +41,8 @@ número sorteado.
 '''
 
 class cartonBingo:
-    def __init__(self, cantidadJugadores):
-        self.jugadores= cantidadJugadores
+    def __init__(self, jugadores):
+        self.cantidadJugadores= jugadores
         self.numeros = []
         
     def generarCarton():
@@ -55,6 +55,9 @@ class cartonBingo:
         pass
 
 class bingo:
+    def __init__(self, jugadores):
+        self.cantidadJugadores= jugadores
+        
     def sortearNumero():
         pass
 
@@ -65,6 +68,29 @@ class bingo:
         pass
     
 
+def validaCantidad(jugadores):
+    try:
+        int(jugadores)
+        enteroJugadores= int(jugadores)
+        if enteroJugadores<1:
+            raise ValueError
+        elif enteroJugadores/float(jugadores) != 1:
+            raise ValueError
+        return True
+    except ValueError:
+        print('La cantidad de jugadores ingresados no es valida, favor ingresar un numero entero positivo.')
+        print('intente nuevamente......')
+
 # A partir de este punto inicia la ejecucion del programa.
 if __name__== '__main__':
-    pass
+    print('***** TAREA DE PROGRAMACION ORIENTADA A OBJETOS *****')
+    print('Ejercicio 2.- Implementación de un Bingo en python')
+    print('Grupo 2: \nXIMENA GABRIELA CARDENAS TOALA \nJUAN CARLOS IZURIETA CISNEROS \nALAN ARIEL TAPIA BENITEZ \n'
+          'DAVID KELVY TOMALA CIMARRA \nCRISTOPHER WILLIAM VERA AMAIQUEMA \n\n')
+    print('***BIENVENIDO AL GRAN BINGO***\n')
+    while True:
+        cantJugadores = input('Ingrese la cantidad de jugadores: ')
+        if validaCantidad(cantJugadores):
+            break
+    rondaBingo= cartonBingo(cantJugadores)
+    rondaBingo.generarCarton()
