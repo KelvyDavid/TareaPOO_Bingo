@@ -41,8 +41,7 @@ número sorteado.
 '''
 
 class cartonBingo:
-    def __init__(self, jugadores):
-        self.cantidadJugadores= jugadores
+    def __init__(self):
         self.numeros = []
         
     def generarCarton():
@@ -56,8 +55,12 @@ class cartonBingo:
 
 class bingo:
     def __init__(self, jugadores):
-        self.cantidadJugadores= jugadores
-        
+        self.jugadores= []
+        for i in range(jugadores):
+            carton=cartonBingo()
+            carton.generarCarton()
+            self.jugadores.append([f'Jugador {i+1}',carton])
+
     def sortearNumero():
         pass
 
@@ -92,5 +95,4 @@ if __name__== '__main__':
         cantJugadores = input('Ingrese la cantidad de jugadores: ')
         if validaCantidad(cantJugadores):
             break
-    rondaBingo= cartonBingo(cantJugadores)
-    rondaBingo.generarCarton()
+    salaBingo= bingo(cantJugadores)
