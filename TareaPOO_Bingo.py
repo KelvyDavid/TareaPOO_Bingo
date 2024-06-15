@@ -64,6 +64,7 @@ class cartonBingo:
 class bingo:
     def __init__(self, jugadores):
         self.jugadores= []
+        self.numSorteados= []
         for i in range(jugadores):
             carton=cartonBingo()
             carton.generarCarton()
@@ -77,18 +78,28 @@ class bingo:
                 print('\t'.join(map(str,lista)))
             print('\n')
             
-    def actualizarCarton():
-        pass
+    def sortearNumero(self):
+        input('Presiona enter para enter para sortear un numero....')
+        numero =0
+        while numero in self.numSorteados or numero==0:
+            numero= random.randint(1,100)
+        self.numSorteados.append(numero)
+        print(self.numSorteados)
+        return numero
+    
+    '''def actualizarCarton(self, numero):
+        for jugador in self.jugadores:
+            for carton in jugador[1]:
+                for i in carton:
+                    if i==numero:
+                        carton[i]='X'''
 
-    def sortearNumero():
-        pass
 
     def marcarNumero():
         pass
-
+    
     def verificarBingo():
         pass
-    
 
 def validaCantidad(jugadores):
     try:
@@ -115,4 +126,6 @@ if __name__== '__main__':
         if validaCantidad(cantJugadores):
             break
     salaBingo= bingo(int(cantJugadores))
+    salaBingo.mostrarCarton()
+    salaBingo.actualizarCarton(salaBingo.sortearNumero())
     salaBingo.mostrarCarton()
