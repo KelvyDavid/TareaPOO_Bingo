@@ -46,22 +46,22 @@ class cartonBingo:
     def __init__(self):
         self.numeros = []
         self.limiteInferior = 1
-        self.limiteSuperior = 101
-        self.cantidadNumeros = 20
+        self.limiteSuperior = 76
+        self.cantidadNumeros = 25
         self.cantFilas = 5
         self.dimFila = int(self.cantidadNumeros/self.cantFilas)
         
     def generarCarton(self):
         listaNumeros= random.sample(range(self.limiteInferior,self.limiteSuperior),self.cantidadNumeros)
-        listaNumeros.sort()
         for i in range(self.cantFilas):
             fila= listaNumeros[i*self.dimFila:(i+1)*self.dimFila]
+            fila= [str(numero) for numero in fila]
             self.numeros.append(fila)
 
     def mostrarDatos(self):
         return self.numeros
 
-class bingo:
+class bingo():
     def __init__(self, jugadores):
         self.jugadores= []
         self.numSorteados= []
@@ -75,28 +75,31 @@ class bingo:
         for jugador in self.jugadores:
             print(f'CARTON DE BINGO DEL {jugador[0]}:')
             for lista in jugador[1]:
-                print('\t'.join(map(str,lista)))
+                print('\t'.join(lista))
             print('\n')
             
     def sortearNumero(self):
         input('Presiona enter para enter para sortear un numero....')
-        numero =0
+        numero=0
         while numero in self.numSorteados or numero==0:
-            numero= random.randint(1,100)
+            numero= str(random.randint(1,75))
         self.numSorteados.append(numero)
+        print(f'El numero sorteado es: {numero}')
         print(self.numSorteados)
         return numero
     
-    '''def actualizarCarton(self, numero):
+    def actualizarCarton(self, numero):
         for jugador in self.jugadores:
-            for carton in jugador[1]:
-                for i in carton:
-                    if i==numero:
-                        carton[i]='X'''
+            for lista in jugador[1]:
+                for i in lista:
+                    if numero == i:
+                        indice= lista.index(i)
+                        lista[indice]='X'
+                        bingo.marcarNumero(jugador[0], jugador[1])
 
-
-    def marcarNumero():
-        pass
+    def marcarNumero(jugador, carton):
+        print(f'Se ha encontrado el numero sorteado en el carton del {jugador}:')
+        print('\t'.join(carton))
     
     def verificarBingo():
         pass
@@ -127,5 +130,6 @@ if __name__== '__main__':
             break
     salaBingo= bingo(int(cantJugadores))
     salaBingo.mostrarCarton()
-    salaBingo.actualizarCarton(salaBingo.sortearNumero())
-    salaBingo.mostrarCarton()
+    while True:
+        numeroSorteado=salaBingo.sortearNumero()
+        salaBingo.actualizarCarton(numeroSorteado)
