@@ -105,12 +105,12 @@ class bingo(cartonBingo):
         for jugador in self.jugadores:
             for fila in jugador[1]:
                 if all(elemento == "X" for elemento in fila):
-                    return jugador[0]
+                    return jugador
         # Verificar columnas
         for col in range(self.carton.dimFila):
             for jugador in self.jugadores:
                 if all(jugador[1][row][col] == "X" for row in range(self.carton.cantFilas)):
-                    return jugador[0]
+                    return jugador
         return False
 
 def validaCantidad(jugadores):
@@ -126,8 +126,7 @@ def validaCantidad(jugadores):
         print('La cantidad de jugadores ingresados no es valida, favor ingresar un numero entero positivo.')
         print('intente nuevamente......')
 
-# A partir de este punto inicia la ejecucion del programa.
-if __name__== '__main__':
+def jugarBingo():
     print('***** TAREA DE PROGRAMACION ORIENTADA A OBJETOS *****')
     print('Ejercicio 2.- Implementación de un Bingo en python')
     print('Grupo 2: \nXIMENA GABRIELA CARDENAS TOALA \nJUAN CARLOS IZURIETA CISNEROS \nALAN ARIEL TAPIA BENITEZ \n'
@@ -145,8 +144,24 @@ if __name__== '__main__':
         salaBingo.actualizarCarton(numeroSorteado)
         verificacionBingo = salaBingo.verificarBingo()
         if verificacionBingo != False:
-            print(f'Bingo!!!!!! El {verificacionBingo} ha ganado.')
+            print(f'Bingo!!!!!! El {verificacionBingo[0]} ha ganado.')
+            salaBingo.marcarNumero(verificacionBingo)
+            break
+            
+# A partir de este punto inicia la ejecucion del programa.
+if __name__== '__main__':
+    while True:
+        jugarBingo()
+        
+        while True:
             continuar = input("¿Desea continuar jugando? (si/no): ").strip().lower()
-            if continuar != 'si':
-                print("Gracias por jugar. ¡Hasta la próxima!")
+            if continuar in ['si', 'no']:
                 break
+            else:
+                print('Favor ingrese una opcion valida, intente nuevamente.....')
+        if continuar == 'no':
+            print("Gracias por jugar. ¡Hasta la próxima!")
+            break
+        elif continuar == 'si':
+            print('\n\n\n')
+            pass
