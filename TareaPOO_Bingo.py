@@ -39,9 +39,11 @@ cartones).
 número sorteado.
 • Anunciar el ganador del juego una vez se cumpla la condición de Bingo.
 '''
-
+#La libreria random permite generar los numeros aleatorios que se imprimiran en el carton de bingo, 
+# asi como el numero a sortear.
 import random
 
+#La clase cartonBingo permite crear los cartones de bingo
 class cartonBingo:
     def __init__(self):
         self.numeros = []
@@ -61,6 +63,7 @@ class cartonBingo:
     def mostrarDatos(self):
         return self.numeros
 
+#La clase bingo permite crear y gestionar la sala de bingo
 class bingo(cartonBingo):
     def __init__(self, jugadores):
         self.jugadores= []
