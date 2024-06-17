@@ -61,31 +61,28 @@ class cartonBingo:
     def mostrarDatos(self):
         return self.numeros
 
-class bingo():
+class bingo(cartonBingo):
     def __init__(self, jugadores):
         self.jugadores= []
         self.numSorteados= []
         for i in range(jugadores):
-            carton=cartonBingo()
-            carton.generarCarton()
-            numCarton= carton.mostrarDatos()
+            self.carton=cartonBingo()
+            self.carton.generarCarton()
+            numCarton= self.carton.mostrarDatos()
             self.jugadores.append([f'JUGADOR {i+1}',numCarton])
 
     def mostrarCarton(self):
         for jugador in self.jugadores:
-            print(f'CARTON DE BINGO DEL {jugador[0]}:')
-            for lista in jugador[1]:
-                print('\t'.join(lista))
-            print('\n')
+            print(f'Carton del {jugador[0]}')
+            self.marcarNumero(jugador)
             
     def sortearNumero(self):
         input('Presiona enter para enter para sortear un numero....')
         numero=0
         while numero in self.numSorteados or numero==0:
-            numero= str(random.randint(1,75))
+            numero= str(random.randint(self.carton.limiteInferior,self.carton.limiteSuperior))
         self.numSorteados.append(numero)
         print(f'El numero sorteado es: {numero}')
-        print(self.numSorteados)
         return numero
     
     def actualizarCarton(self, numero):
@@ -95,14 +92,26 @@ class bingo():
                     if numero == i:
                         indice= lista.index(i)
                         lista[indice]='X'
-                        bingo.marcarNumero(jugador[0], jugador[1])
+                        print(f'Se ha encontrado el numero sorteado en el carton del {jugador[0]}:')
+                        self.marcarNumero(jugador)
 
-    def marcarNumero(jugador, carton):
-        print(f'Se ha encontrado el numero sorteado en el carton del {jugador}:')
-        print('\t'.join(carton))
+    def marcarNumero(self, jugador):
+        for lista in jugador[1]:
+            print('\t'.join(lista))
+        print('\n')
     
-    def verificarBingo():
-        pass
+    def verificarBingo(self):
+        # Verificar filas
+        for jugador in self.jugadores:
+            for fila in jugador[1]:
+                if all(elemento == "X" for elemento in fila):
+                    return jugador[0]
+        # Verificar columnas
+        for col in range(self.carton.dimFila):
+            for jugador in self.jugadores:
+                if all(jugador[1][row][col] == "X" for row in range(self.carton.cantFilas)):
+                    return jugador[0]
+        return False
 
 def validaCantidad(jugadores):
     try:
@@ -128,8 +137,16 @@ if __name__== '__main__':
         cantJugadores = input('Ingrese la cantidad de jugadores: ')
         if validaCantidad(cantJugadores):
             break
+    print('\nCARTONES DE BINGO GENERADOS PARA CADA JUGADOR\n')
     salaBingo= bingo(int(cantJugadores))
     salaBingo.mostrarCarton()
     while True:
         numeroSorteado=salaBingo.sortearNumero()
         salaBingo.actualizarCarton(numeroSorteado)
+        verificacionBingo = salaBingo.verificarBingo()
+        if verificacionBingo != False:
+            print(f'Bingo!!!!!! El {verificacionBingo} ha ganado.')
+            continuar = input("¿Desea continuar jugando? (si/no): ").strip().lower()
+            if continuar != 'si':
+                print("Gracias por jugar. ¡Hasta la próxima!")
+                break
