@@ -45,14 +45,17 @@ import random
 
 #La clase cartonBingo permite crear los cartones de bingo
 class cartonBingo:
+
+    #Atributos del carton de bingo
     def __init__(self):
         self.numeros = []
         self.limiteInferior = 1
         self.limiteSuperior = 76
-        self.cantidadNumeros = 25
+        self.cantidadNumeros = 25   #La cantidad de numeros debe ser un multiplo de la cantidad de filas.
         self.cantFilas = 5
         self.dimFila = int(self.cantidadNumeros/self.cantFilas)
         
+    #Genera una lista de números aleatorios en una matriz de 5*5
     def generarCarton(self):
         listaNumeros= random.sample(range(self.limiteInferior,self.limiteSuperior),self.cantidadNumeros)
         for i in range(self.cantFilas):
@@ -60,11 +63,14 @@ class cartonBingo:
             fila= [str(numero) for numero in fila]
             self.numeros.append(fila)
 
+    #Retorna los números del cartón
     def mostrarDatos(self):
         return self.numeros
 
 #La clase bingo permite crear y gestionar la sala de bingo
-class bingo(cartonBingo):
+class bingo:
+
+    #Genera un cartón de bingo para el número de jugadores
     def __init__(self, jugadores):
         self.jugadores= []
         self.numSorteados= []
@@ -74,20 +80,24 @@ class bingo(cartonBingo):
             numCarton= self.carton.mostrarDatos()
             self.jugadores.append([f'JUGADOR {i+1}',numCarton])
 
+    #Muestra el cartón de bingo de cada uno de los jugador en donde este el numero sorteado
     def mostrarCarton(self):
         for jugador in self.jugadores:
             print(f'Carton del {jugador[0]}')
             self.marcarNumero(jugador)
             
+    #Solicita al usuario que presione enter para sortear un número,
+    #generando un número aleatorio que no se haya repetido
     def sortearNumero(self):
         input('Presiona enter para enter para sortear un numero....')
         numero=0
         while numero in self.numSorteados or numero==0:
-            numero= str(random.randint(self.carton.limiteInferior,self.carton.limiteSuperior))
+            numero= str(random.randint(self.carton.limiteInferior,self.carton.limiteSuperior-1))
         self.numSorteados.append(numero)
         print(f'El numero sorteado es: {numero}')
         return numero
     
+    #Actualiza los cartones de los jugadores reemplazando el número sorteado con una "X"
     def actualizarCarton(self, numero):
         for jugador in self.jugadores:
             for lista in jugador[1]:
@@ -98,11 +108,13 @@ class bingo(cartonBingo):
                         print(f'Se ha encontrado el numero sorteado en el carton del {jugador[0]}:')
                         self.marcarNumero(jugador)
 
+    #Muestra los cartones que contengan el numero sorteado, ya actualizados
     def marcarNumero(self, jugador):
         for lista in jugador[1]:
             print('\t'.join(lista))
         print('\n')
     
+    #Verifica si algún jugador ha completado una fila o columna marcado con una "X"
     def verificarBingo(self):
         # Verificar filas
         for jugador in self.jugadores:
@@ -115,7 +127,8 @@ class bingo(cartonBingo):
                 if all(jugador[1][row][col] == "X" for row in range(self.carton.cantFilas)):
                     return jugador
         return False
-
+    
+#Valida que el número de jugadores sea un entero positivo
 def validaCantidad(jugadores):
     try:
         int(jugadores)
@@ -129,22 +142,31 @@ def validaCantidad(jugadores):
         print('La cantidad de jugadores ingresados no es valida, favor ingresar un numero entero positivo.')
         print('intente nuevamente......')
 
+#Funciones de juego
 def jugarBingo():
     print('***** TAREA DE PROGRAMACION ORIENTADA A OBJETOS *****')
     print('Ejercicio 2.- Implementación de un Bingo en python')
     print('Grupo 2: \nXIMENA GABRIELA CARDENAS TOALA \nJUAN CARLOS IZURIETA CISNEROS \nALAN ARIEL TAPIA BENITEZ \n'
           'DAVID KELVY TOMALA CIMARRA \nCRISTOPHER WILLIAM VERA AMAIQUEMA \n\n')
     print('***BIENVENIDO AL GRAN BINGO***\n')
+
+    #solicita al usuario el numero de jugadores, verificando que sea un número entero positivo
     while True:
         cantJugadores = input('Ingrese la cantidad de jugadores: ')
         if validaCantidad(cantJugadores):
             break
     print('\nCARTONES DE BINGO GENERADOS PARA CADA JUGADOR\n')
+
+    #Crea la sala de bingo y muestra los cartones de bingo para cada jugador
     salaBingo= bingo(int(cantJugadores))
     salaBingo.mostrarCarton()
+
+    #Ciclo repetitivo donde se sortean números y se actualizan los cartones
     while True:
         numeroSorteado=salaBingo.sortearNumero()
         salaBingo.actualizarCarton(numeroSorteado)
+
+        #Si hay un ganador,muetra en pantalla el mensaje de victoria y muestra el cartón del ganador
         verificacionBingo = salaBingo.verificarBingo()
         if verificacionBingo != False:
             print(f'Bingo!!!!!! El {verificacionBingo[0]} ha ganado.')
@@ -155,7 +177,8 @@ def jugarBingo():
 if __name__== '__main__':
     while True:
         jugarBingo()
-        
+
+        #Solicita al usuario si desea continuar jugando
         while True:
             continuar = input("¿Desea continuar jugando? (si/no): ").strip().lower()
             if continuar in ['si', 'no']:
